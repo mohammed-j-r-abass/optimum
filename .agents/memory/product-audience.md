@@ -13,3 +13,15 @@ Live audio-and-visual conversation is core MVP scope, not an optional later enha
 **Why:** The user identifies a live AI interviewer that can hear and see the applicant as the product's main distinction from ordinary interview advice and text chat.
 
 **How to apply:** Prioritize a supported real-time multimodal provider and an actual live conversation. Clearly disclose provider connection requirements rather than silently reducing scope. Visual coaching must stay grounded in observable presentation rather than inferred emotions, personality or employability.
+
+The AI must lead novice applicants through recommended actions and ask for missing facts, not ask "Do you want me to do this?" or make them choose resume conventions. The user repeated that applicants do not know what employers expect. Use full known institution names automatically; clarify genuinely ambiguous facts without asking stylistic preferences.
+
+**Why:** The user tested the app and found permission-seeking and expert-choice questions unhelpful despite the features working.
+
+**How to apply:** Apply this across text, voice, interview preparation and feedback. Explain what will improve the application, ask for the evidence needed, and do the writing. Preserve factual accuracy and explicit user corrections.
+
+The user wants resumes in the familiar software-engineering style: bold centered name, aligned entries and bold section headings separated by rules. Conversations should feel like WhatsApp with distinct colours and green AI messages.
+
+**Why:** The user explicitly rejected the plain-text resume design and unclear conversational presentation.
+
+**How to apply:** Preserve these visual choices in preview and actual downloadable PDF, without importing app navigation into the document.

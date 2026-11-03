@@ -30,6 +30,25 @@ export interface ApplicationInput {
   description: string;
 }
 
+export interface CvEntry {
+  heading: string;
+  detail: string;
+  location: string;
+  date: string;
+  bullets: string[];
+}
+
+export interface CvSection {
+  title: string;
+  entries: CvEntry[];
+}
+
+export interface CvDocument {
+  name: string;
+  contact: string[];
+  sections: CvSection[];
+}
+
 export interface Application {
   id: string;
   title: string;
@@ -40,6 +59,7 @@ export interface Application {
   advice: string;
   messages: Message[];
   createdAt: string;
+  cvDocument?: CvDocument;
 }
 
 export interface CoachInput {

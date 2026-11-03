@@ -76,5 +76,9 @@
     "vite": "catalog:",
     "wouter": "^3.3.5",
     "zod": "catalog:"
+  },
+  "dependencies": {
+    "@react-pdf/renderer": "^4.9.0",
+    "react-markdown": "^10.1.0"
   }
 }

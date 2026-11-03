@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useParams } from 'wouter';
 import { useGenerateCv, useGetApplication, useSendCoachMessage } from '@workspace/api-client-react';
-import { ArrowLeft, Download, FileText, Loader2, Printer, RefreshCw, Send, Sparkles } from 'lucide-react';
+import { ArrowLeft, Download, FileText, Loader2, RefreshCw, Send, Sparkles } from 'lucide-react';
 import { ChatThread } from '@/components/chat-thread';
 import { VoicePanel } from '@/components/voice-panel';
 import { ErrorState, CardSkeletons } from '@/components/states';
@@ -10,6 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useRefresh } from '@/lib/use-refresh';
 import { downloadText, errorMessage } from '@/lib/media';
+import { CvPreview } from '@/components/cv-preview';
+import { getCvDocument } from '@/lib/cv-model';
 
 const STARTERS = ['I helped on my family farm every weekend', 'I led a group project at school', 'I volunteer at church or a club', 'Please make my CV shorter'];
 
@@ -23,6 +25,19 @@ export default function ApplicationDetailPage() {
   const [text, setText] = useState('');
   const [pendingText, setPendingText] = useState('');
   const [tab, setTab] = useState<'coach' | 'cv'>('coach');
+  const [pdfBusy, setPdfBusy] = useState(false);
+  const cvDoc = useMemo(() => (app ? getCvDocument(app.cv, app.cvDocument) : null), [app]);
+
+  async function downloadPdf(name: string) {
+    if (!cvDoc) return;
+    setPdfBusy(true);
+    try {
+      const mod = await import('@/lib/cv-pdf');
+      await mod.downloadCvPdf(cvDoc, name);
+    } catch (e) {
+      toast({ title: 'Could not make the PDF', description: errorMessage(e), variant: 'destructive' });
+    } finally { setPdfBusy(false); }
+  }
 
   function submit(msg: string) {
     const m = msg.trim();
@@ -46,6 +61,8 @@ export default function ApplicationDetailPage() {
   if (isLoading || !app) return <CardSkeletons count={2} />;
 
   const context = () => `Role: ${app.title} at ${app.company}. Job description: ${app.description.slice(0, 1500)}. You are a patient CV coach for a rural final-year student. Ask one friendly follow-up question to collect real facts for the CV. Conversation so far:\n${app.messages.slice(-10).map((m) => `${m.role}: ${m.content}`).join('\n')}`;
+  const lastAi = [...app.messages].reverse().find((m) => m.role !== 'user' && m.role !== 'system');
+  const showAdvice = !!app.advice && app.advice.trim() !== lastAi?.content.trim();
   const fileBase = `${app.title}-${app.company}-CV`.replace(/[^a-z0-9]+/gi, '-');
 
   return (
@@ -68,8 +85,8 @@ export default function ApplicationDetailPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
         <section className={`${tab === 'coach' ? 'flex' : 'hidden'} flex-col gap-4 lg:flex`}>
-          {app.advice && <div className="rounded-2xl border-l-4 border-millet bg-secondary/50 p-4 text-sm" data-testid="text-advice"><p className="mb-1 text-xs font-semibold uppercase tracking-wider text-secondary-foreground">Coach notes</p><p className="whitespace-pre-wrap">{app.advice}</p></div>}
-          <div className="max-h-[60vh] min-h-[280px] overflow-y-auto rounded-2xl border bg-background/60 p-4">
+          {showAdvice && <div className="rounded-2xl border-l-4 border-millet bg-secondary/50 p-4 text-sm" data-testid="text-advice"><p className="mb-1 text-xs font-semibold uppercase tracking-wider text-secondary-foreground">Coach notes</p><p className="whitespace-pre-wrap">{app.advice}</p></div>}
+          <div className="max-h-[60vh] min-h-[280px] overflow-y-auto rounded-2xl border bg-[#f3efe6] p-3 sm:p-4" style={{ backgroundImage: 'radial-gradient(hsl(var(--ink) / 0.05) 1px, transparent 1px)', backgroundSize: '18px 18px' }}>
             <ChatThread messages={app.messages} pending={send.isPending} pendingText={pendingText} empty={
               <div className="py-6 text-center text-sm text-muted-foreground">
                 <p className="font-display text-lg text-ink">Let us find your experience together.</p>
@@ -93,11 +110,14 @@ export default function ApplicationDetailPage() {
               <p className="flex items-center gap-2 font-semibold text-ink"><FileText className="h-4 w-4 text-clay" /> CV preview</p>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" disabled={!app.cv} onClick={() => downloadText(`${fileBase}.txt`, app.cv)} data-testid="button-download-txt"><Download className="mr-1.5 h-3.5 w-3.5" /> .txt</Button>
-                <Button size="sm" variant="outline" disabled={!app.cv} onClick={() => window.print()} data-testid="button-print-pdf"><Printer className="mr-1.5 h-3.5 w-3.5" /> Save as PDF</Button>
+                <Button size="sm" variant="outline" disabled={!cvDoc || pdfBusy} onClick={() => downloadPdf(`${fileBase}.pdf`)} data-testid="button-download-pdf">{pdfBusy ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Download className="mr-1.5 h-3.5 w-3.5" />} {pdfBusy ? 'Making PDF' : 'PDF'}</Button>
               </div>
             </div>
             {app.cv ? (
-              <pre className="max-h-[70vh] overflow-y-auto whitespace-pre-wrap p-6 font-serif text-[13.5px] leading-relaxed" data-testid="text-cv">{app.cv}</pre>
+              <div className="max-h-[75vh] overflow-y-auto bg-muted/40 p-2 sm:p-4">
+                {cvDoc && <CvPreview doc={cvDoc} />}
+                <p className="mt-3 px-2 text-xs text-muted-foreground">Layout follows common guidance from <a href="https://careerservices.fas.harvard.edu/resources/create-a-strong-resume/" target="_blank" rel="noopener noreferrer" className="underline hover:text-clay" data-testid="link-harvard-guide">Harvard Career Services</a> and <a href="https://nationalcareers.service.gov.uk/careers-advice/cv-sections" target="_blank" rel="noopener noreferrer" className="underline hover:text-clay" data-testid="link-ncs-guide">National Careers Service</a>.</p>
+              </div>
             ) : (
               <div className="ruled p-10 text-center text-sm text-muted-foreground">
                 <p className="font-display text-lg text-ink">No CV yet</p>
@@ -107,7 +127,6 @@ export default function ApplicationDetailPage() {
           </div>
         </section>
       </div>
-      {app.cv && <div id="print-cv">{app.cv}</div>}
     </div>
   );
 }

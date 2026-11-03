@@ -70,7 +70,21 @@ export const GetDashboardResponse = zod.object({
   "role": zod.string(),
   "content": zod.string()
 })),
-  "createdAt": zod.string()
+  "createdAt": zod.string(),
+  "cvDocument": zod.object({
+  "name": zod.string(),
+  "contact": zod.array(zod.string()),
+  "sections": zod.array(zod.object({
+  "title": zod.string(),
+  "entries": zod.array(zod.object({
+  "heading": zod.string(),
+  "detail": zod.string(),
+  "location": zod.string(),
+  "date": zod.string(),
+  "bullets": zod.array(zod.string())
+}))
+}))
+}).optional()
 })),
   "interviews": zod.array(zod.object({
   "id": zod.string(),
@@ -104,7 +118,21 @@ export const ListApplicationsResponseItem = zod.object({
   "role": zod.string(),
   "content": zod.string()
 })),
-  "createdAt": zod.string()
+  "createdAt": zod.string(),
+  "cvDocument": zod.object({
+  "name": zod.string(),
+  "contact": zod.array(zod.string()),
+  "sections": zod.array(zod.object({
+  "title": zod.string(),
+  "entries": zod.array(zod.object({
+  "heading": zod.string(),
+  "detail": zod.string(),
+  "location": zod.string(),
+  "date": zod.string(),
+  "bullets": zod.array(zod.string())
+}))
+}))
+}).optional()
 })
 export const ListApplicationsResponse = zod.array(ListApplicationsResponseItem)
 
@@ -127,7 +155,21 @@ export const CreateApplicationResponse = zod.object({
   "role": zod.string(),
   "content": zod.string()
 })),
-  "createdAt": zod.string()
+  "createdAt": zod.string(),
+  "cvDocument": zod.object({
+  "name": zod.string(),
+  "contact": zod.array(zod.string()),
+  "sections": zod.array(zod.object({
+  "title": zod.string(),
+  "entries": zod.array(zod.object({
+  "heading": zod.string(),
+  "detail": zod.string(),
+  "location": zod.string(),
+  "date": zod.string(),
+  "bullets": zod.array(zod.string())
+}))
+}))
+}).optional()
 })
 
 
@@ -147,7 +189,21 @@ export const GetApplicationResponse = zod.object({
   "role": zod.string(),
   "content": zod.string()
 })),
-  "createdAt": zod.string()
+  "createdAt": zod.string(),
+  "cvDocument": zod.object({
+  "name": zod.string(),
+  "contact": zod.array(zod.string()),
+  "sections": zod.array(zod.object({
+  "title": zod.string(),
+  "entries": zod.array(zod.object({
+  "heading": zod.string(),
+  "detail": zod.string(),
+  "location": zod.string(),
+  "date": zod.string(),
+  "bullets": zod.array(zod.string())
+}))
+}))
+}).optional()
 })
 
 
@@ -180,7 +236,21 @@ export const SendCoachMessageResponse = zod.object({
   "role": zod.string(),
   "content": zod.string()
 })),
-  "createdAt": zod.string()
+  "createdAt": zod.string(),
+  "cvDocument": zod.object({
+  "name": zod.string(),
+  "contact": zod.array(zod.string()),
+  "sections": zod.array(zod.object({
+  "title": zod.string(),
+  "entries": zod.array(zod.object({
+  "heading": zod.string(),
+  "detail": zod.string(),
+  "location": zod.string(),
+  "date": zod.string(),
+  "bullets": zod.array(zod.string())
+}))
+}))
+}).optional()
 })
 
 
@@ -200,7 +270,21 @@ export const GenerateCvResponse = zod.object({
   "role": zod.string(),
   "content": zod.string()
 })),
-  "createdAt": zod.string()
+  "createdAt": zod.string(),
+  "cvDocument": zod.object({
+  "name": zod.string(),
+  "contact": zod.array(zod.string()),
+  "sections": zod.array(zod.object({
+  "title": zod.string(),
+  "entries": zod.array(zod.object({
+  "heading": zod.string(),
+  "detail": zod.string(),
+  "location": zod.string(),
+  "date": zod.string(),
+  "bullets": zod.array(zod.string())
+}))
+}))
+}).optional()
 })
 
 

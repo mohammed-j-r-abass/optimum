@@ -705,6 +705,9 @@
           },
           "createdAt": {
             "type": "string"
+          },
+          "cvDocument": {
+            "$ref": "#/components/schemas/CvDocument"
           }
         },
         "required": [
@@ -1033,6 +1036,79 @@
               "$ref": "#/components/schemas/LiveTranscriptEvent"
             },
             "maxItems": 50
+          }
+        }
+      },
+      "CvEntry": {
+        "type": "object",
+        "required": [
+          "heading",
+          "detail",
+          "location",
+          "date",
+          "bullets"
+        ],
+        "properties": {
+          "heading": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "bullets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CvSection": {
+        "type": "object",
+        "required": [
+          "title",
+          "entries"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CvEntry"
+            }
+          }
+        }
+      },
+      "CvDocument": {
+        "type": "object",
+        "required": [
+          "name",
+          "contact",
+          "sections"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "contact": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CvSection"
+            }
           }
         }
       }

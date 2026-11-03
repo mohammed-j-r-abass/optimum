@@ -4,6 +4,7 @@
  * Api
  * OpenAPI spec version: 1.0.0
  */
+import type { CvDocument } from './cvDocument';
 import type { Message } from './message';
 
 export interface Application {
@@ -16,4 +17,5 @@ export interface Application {
   advice: string;
   messages: Message[];
   createdAt: string;
+  cvDocument?: CvDocument;
 }

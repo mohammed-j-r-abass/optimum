@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/express": "^2.1.86",
     "@clerk/shared": "^4.43.1",
+    "@google/genai": "^2.32.0",
     "@workspace/api-zod": "workspace:*",
     "@workspace/db": "workspace:*",
     "cookie-parser": "^1.4.7",

@@ -8,6 +8,7 @@ import { ask, openai, coachRules } from "../lib/ai";
 import mammoth from "mammoth";
 import pdf from "pdf-parse/lib/pdf-parse.js";
 import { toFile } from "openai";
+import { liveInterviewRouter } from "./live-interviews";
 
 const router = Router();
 type Data = Record<string, any>;
@@ -94,6 +95,7 @@ router.use((req, res, next) => {
   res.once("finish", () => { u.active = Math.max(0, u.active - 1); });
   next();
 });
+router.use(liveInterviewRouter({ find, profile, careerContext }));
 router.get("/profile", async (_req, res) => { res.json(await profile(res.locals.owner)); });
 router.put("/profile", async (req, res) => {
   const p = parse(SaveProfileBody, req, res); if (!p) return;

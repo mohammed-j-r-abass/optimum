@@ -117,6 +117,35 @@ export interface ResearchResult {
   sources: Resource[];
 }
 
+export interface LiveSession {
+  token: string;
+  model: string;
+  sessionId: string;
+  expiresAt: string;
+  /** JSON-encoded locked Gemini LiveConnectConfig */
+  config: string;
+}
+
+export type LiveTranscriptEventRole = typeof LiveTranscriptEventRole[keyof typeof LiveTranscriptEventRole];
+
+
+export const LiveTranscriptEventRole = {
+  user: 'user',
+  assistant: 'assistant',
+} as const;
+
+export interface LiveTranscriptEvent {
+  id: string;
+  role: LiveTranscriptEventRole;
+  content: string;
+}
+
+export interface LiveTranscriptInput {
+  sessionId: string;
+  /** @maxItems 50 */
+  events: LiveTranscriptEvent[];
+}
+
 export type DeleteApplication200 = {
   success: boolean;
 };

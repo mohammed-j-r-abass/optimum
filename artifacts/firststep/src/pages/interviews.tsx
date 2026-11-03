@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Link } from 'wouter';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -14,8 +14,7 @@ import { ArrowLeft, CalendarClock, Flag, Loader2, MessagesSquare, Play, Send } f
 import { format } from 'date-fns';
 import { PageHeader, ErrorState, CardSkeletons, EmptyState } from '@/components/states';
 import { ChatThread } from '@/components/chat-thread';
-import { VoicePanel } from '@/components/voice-panel';
-import { CameraPanel } from '@/components/camera-panel';
+import { LiveInterview } from '@/components/live-interview';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -144,7 +143,7 @@ function Session({ interview, onBack }: { interview: Interview; onBack: () => vo
   const { toast } = useToast();
   const [text, setText] = useState('');
   const [pendingText, setPendingText] = useState('');
-  const [snapshot, setSnapshot] = useState<string | null>(null);
+  const [liveBusy, setLiveBusy] = useState(false);
   const done = isDone(interview);
 
   const patch = (i: Interview) => qc.setQueryData<Interview[]>(getListInterviewsQueryKey(), (old) => old?.map((o) => (o.id === i.id ? i : o)));
@@ -155,8 +154,8 @@ function Session({ interview, onBack }: { interview: Interview; onBack: () => vo
     if (!m) return;
     setPendingText(m);
     setText('');
-    turn.mutate({ id: interview.id, data: { message: m, ...(snapshot ? { image: snapshot } : {}) } }, {
-      onSuccess: (i) => { patch(i); setSnapshot(null); refresh(); },
+    turn.mutate({ id: interview.id, data: { message: m } }, {
+      onSuccess: (i) => { patch(i); refresh(); },
       onError: (err) => { setText(m); toast({ title: 'Answer not sent', description: errorMessage(err), variant: 'destructive' }); },
     });
   }
@@ -168,17 +167,27 @@ function Session({ interview, onBack }: { interview: Interview; onBack: () => vo
     });
   }
 
-  const context = useMemo(() => () => `Mock ${stageLabel(interview.stage)} interview practice for: ${interview.title}. You are a kind interviewer for a first-time job seeker. Give short, specific feedback on the spoken answer's content, then ask the next question. Never comment on emotions, personality, appearance or disability. Conversation so far:\n${interview.messages.slice(-10).map((m) => `${m.role}: ${m.content}`).join('\n')}`, [interview]);
+  useEffect(() => {
+    if (!liveBusy) return;
+    const h = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ''; };
+    window.addEventListener('beforeunload', h);
+    return () => window.removeEventListener('beforeunload', h);
+  }, [liveBusy]);
+
+  function back() {
+    if (liveBusy && !window.confirm('A live call is running or part of your transcript is not saved yet. Leave anyway and lose it?')) return;
+    onBack();
+  }
 
   return (
     <div>
-      <button onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-clay" data-testid="button-back-interviews"><ArrowLeft className="h-4 w-4" /> All practice</button>
+      <button onClick={back} className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-clay" data-testid="button-back-interviews"><ArrowLeft className="h-4 w-4" /> All practice</button>
       <div className="rise mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-clay">{stageLabel(interview.stage)}</p>
           <h1 className="text-3xl font-semibold text-ink">{interview.title}</h1>
         </div>
-        {!done && <Button variant="outline" onClick={end} disabled={finish.isPending || interview.messages.length < 2} data-testid="button-finish-interview">{finish.isPending ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Flag className="mr-1.5 h-4 w-4" />}Finish and get feedback</Button>}
+        {!done && <Button variant="outline" onClick={end} disabled={finish.isPending || liveBusy || !interview.messages.some(m => m.role === 'user')} title={liveBusy ? 'End the live call and wait for the transcript to save first' : undefined} data-testid="button-finish-interview">{finish.isPending ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Flag className="mr-1.5 h-4 w-4" />}Finish and get feedback</Button>}
       </div>
 
       {done && (
@@ -195,22 +204,21 @@ function Session({ interview, onBack }: { interview: Interview; onBack: () => vo
         </div>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      <div className="grid gap-6">
         <div className="space-y-4">
+          {!done && <LiveInterview interviewId={interview.id} onSaved={(i) => { patch(i); refresh(); }} onBusyChange={setLiveBusy} />}
           <div className="max-h-[60vh] min-h-[300px] overflow-y-auto rounded-2xl border bg-background/60 p-4">
-            <ChatThread assistantName="Interviewer" messages={interview.messages} pending={turn.isPending} pendingText={pendingText} empty={<p className="py-8 text-center text-sm text-muted-foreground">Say hello or type "ready" and the interviewer will ask the first question.</p>} />
+            <ChatThread assistantName="Interviewer" messages={interview.messages} pending={turn.isPending} pendingText={pendingText} empty={<p className="py-8 text-center text-sm text-muted-foreground">Start the live call above, or type "ready" and the interviewer will ask the first question.</p>} />
           </div>
           {!done && (
             <>
               <form onSubmit={submit} className="flex items-end gap-2 rounded-2xl border bg-card p-2">
-                <Textarea value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={3} placeholder="Type your answer. Take your time." className="resize-none border-0 bg-transparent shadow-none focus-visible:ring-0" data-testid="input-answer" />
-                <Button type="submit" size="icon" disabled={turn.isPending || !text.trim()} aria-label="Send answer" data-testid="button-send-answer"><Send className="h-4 w-4" /></Button>
+                <Textarea value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } }} rows={3} disabled={liveBusy} placeholder={liveBusy ? 'Typing is paused during the live call. End the call to type.' : 'Type your answer. Take your time.'} className="resize-none border-0 bg-transparent shadow-none focus-visible:ring-0" data-testid="input-answer" />
+                <Button type="submit" size="icon" disabled={turn.isPending || liveBusy || !text.trim()} aria-label="Send answer" data-testid="button-send-answer"><Send className="h-4 w-4" /></Button>
               </form>
-              <VoicePanel who="Interviewer" buildContext={context} interviewId={interview.id} onSaved={() => refresh()} saveNote="Your spoken answer and the reply are saved here and count toward your feedback." />
             </>
           )}
         </div>
-        {!done && <CameraPanel snapshot={snapshot} onSnapshot={setSnapshot} />}
       </div>
     </div>
   );

@@ -515,6 +515,76 @@
           }
         }
       }
+    },
+    "/interviews/{id}/live": {
+      "post": {
+        "operationId": "startLiveInterview",
+        "tags": [
+          "firststep"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveSession"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/interviews/{id}/live/transcripts": {
+      "post": {
+        "operationId": "saveLiveTranscripts",
+        "tags": [
+          "firststep"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LiveTranscriptInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Interview"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -895,6 +965,76 @@
           "answer",
           "sources"
         ]
+      },
+      "LiveSession": {
+        "type": "object",
+        "required": [
+          "token",
+          "model",
+          "sessionId",
+          "expiresAt",
+          "config"
+        ],
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "sessionId": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "config": {
+            "type": "string",
+            "description": "JSON-encoded locked Gemini LiveConnectConfig"
+          }
+        }
+      },
+      "LiveTranscriptEvent": {
+        "type": "object",
+        "required": [
+          "id",
+          "role",
+          "content"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant"
+            ]
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      },
+      "LiveTranscriptInput": {
+        "type": "object",
+        "required": [
+          "sessionId",
+          "events"
+        ],
+        "properties": {
+          "sessionId": {
+            "type": "string"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LiveTranscriptEvent"
+            },
+            "maxItems": 50
+          }
+        }
       }
     }
   }

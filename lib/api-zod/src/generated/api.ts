@@ -340,3 +340,50 @@ export const ResearchCareersResponse = zod.object({
 })
 
 
+export const StartLiveInterviewParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const StartLiveInterviewResponse = zod.object({
+  "token": zod.string(),
+  "model": zod.string(),
+  "sessionId": zod.string(),
+  "expiresAt": zod.string(),
+  "config": zod.string().describe('JSON-encoded locked Gemini LiveConnectConfig')
+})
+
+
+export const SaveLiveTranscriptsParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const saveLiveTranscriptsBodyEventsMax = 50;
+
+
+
+export const SaveLiveTranscriptsBody = zod.object({
+  "sessionId": zod.string(),
+  "events": zod.array(zod.object({
+  "id": zod.string(),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string()
+})).max(saveLiveTranscriptsBodyEventsMax)
+})
+
+export const SaveLiveTranscriptsResponse = zod.object({
+  "id": zod.string(),
+  "applicationId": zod.string(),
+  "title": zod.string(),
+  "stage": zod.string(),
+  "status": zod.string(),
+  "messages": zod.array(zod.object({
+  "role": zod.string(),
+  "content": zod.string()
+})),
+  "feedback": zod.string(),
+  "score": zod.number().nullable(),
+  "scheduledAt": zod.string(),
+  "createdAt": zod.string()
+})
+
+

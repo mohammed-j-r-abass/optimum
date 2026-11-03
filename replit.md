@@ -30,8 +30,10 @@ FirstStep helps first-time job seekers build truthful tailored CVs and practise 
 
 - Guest workspaces let applicants try the product before signing up. Signed-in Clerk accounts isolate saved information and claim the current browser's guest work when signing in.
 - AI must never invent experience or qualifications. Interview ratings assess answer quality, not hiring probability or inferred personality.
-- MVP voice is recorded turn-by-turn speech-to-speech with separately transcribed user answers for history/scoring. This is not continuous duplex streaming.
-- Camera is an opt-in local preview with explicitly shared snapshots for lighting/framing feedback. No emotion, personality, disability or employability inference.
+- Interview practice uses Gemini Live for continuous interruptible audio and optional automatically shared camera frames at about one per second. CV coaching retains recorded turn-by-turn speech.
+- Live sessions use server-issued one-use ephemeral tokens locked to an interview configuration, with a ten-minute expiry and nine-minute UI call limit. The permanent Gemini key stays server-side.
+- Live user/model transcripts are saved with event IDs for duplicate-safe retries and reused for feedback; raw media is not saved by FirstStep.
+- Camera sharing is optional and visibly indicated. Visual coaching covers observable presentation only: no emotion, personality, disability or employability inference.
 - Files are transiently parsed into text. Original file bytes, camera snapshots and audio recordings are not retained.
 
 ## Product

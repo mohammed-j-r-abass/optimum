@@ -1,1 +1,2 @@
 - [Product audience](product-audience.md) — FirstStep serves rural first-time applicants; preserve supportive language and truthful CV coaching.
+- [Live provider compatibility](live-provider-compatibility.md) — Live docs and SDK ephemeral-auth versions can disagree; verify the actual constrained-token WebSocket connection.

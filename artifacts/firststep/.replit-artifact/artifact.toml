@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "FirstStep"
+description = "An encouraging AI career companion for first-time job seekers: build honest tailored CVs and practise interviews through text, voice and optional camera feedback."
+version = "1.0.0"
+id = "artifacts/firststep"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25520
+
+[services.development]
+run = "pnpm --filter @workspace/firststep run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/firststep", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/firststep/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25520"
+BASE_PATH = "/"

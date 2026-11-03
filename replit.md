@@ -1,10 +1,11 @@
-# [Project name]
+# FirstStep
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+FirstStep helps first-time job seekers build truthful tailored CVs and practise role-specific interviews with an AI career mentor.
 
 ## Run & Operate
 
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/firststep run dev` — web app (use its managed workflow)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -22,23 +23,28 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- Web app: `artifacts/firststep/`; API handlers: `artifacts/api-server/src/routes/career.ts`
+- Contract: `lib/api-spec/openapi.yaml`; persistence: `lib/db/src/schema/career.ts`
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Guest workspaces let applicants try the product before signing up. Signed-in Clerk accounts isolate saved information and claim the current browser's guest work when signing in.
+- AI must never invent experience or qualifications. Interview ratings assess answer quality, not hiring probability or inferred personality.
+- MVP voice is recorded turn-by-turn speech-to-speech with separately transcribed user answers for history/scoring. This is not continuous duplex streaming.
+- Camera is an opt-in local preview with explicitly shared snapshots for lighting/framing feedback. No emotion, personality, disability or employability inference.
+- Files are transiently parsed into text. Original file bytes, camera snapshots and audio recordings are not retained.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Saved career profiles, conversational CV discovery, per-job tailored CVs with TXT download and print-to-PDF, spoken/text interview practice, practice feedback and scheduling, transient PDF/DOCX/TXT imports, curated resources and source-linked web research.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+The MVP targets graduating and first-time applicants, especially rural applicants without access to job-application support. It should be appealing but not overly fancy.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+After contract changes regenerate API clients. Clerk uses cookie transport on web and canonical proxy middleware. Web research fails explicitly if its provider is unavailable; guides remain accessible.
 
 ## Pointers
 

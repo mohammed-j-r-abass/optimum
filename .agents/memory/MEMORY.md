@@ -1,0 +1,1 @@
+- [Product audience](product-audience.md) — FirstStep serves rural first-time applicants; preserve supportive language and truthful CV coaching.

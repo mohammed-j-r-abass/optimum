@@ -44,8 +44,8 @@ The user wants chat and CV sections independently expandable to full-screen focu
 
 **How to apply:** Preserve unsent text, pending replies and media state when changing layout; keep a visible restore/reopen control.
 
-The user wants a very easy-to-use home page, is interested in keeping everything on a single page without scrolling, and wants the stats better arranged.
+The user chose the “One clear next step” home design: a very easy-to-use single-page home without scrolling, a prominent recommended action, and compact grouped stats.
 
-**Why:** The user asked to explore simpler UI/UX directions rather than adding more home-page sections.
+**Why:** After comparing simpler UI/UX directions, the user explicitly approved this design for the working app.
 
-**How to apply:** Prioritise the next useful action, group meaningful stats, and remove repeated navigation/actions. Explore without replacing the working app until a direction is chosen; preserve readable content rather than clipping it to claim a single-screen fit.
+**How to apply:** Prioritise the next useful action, group meaningful stats, and avoid repeating large home-page sections. Preserve the approved design while using actual account data and working navigation; preserve readable content rather than clipping it to claim a single-screen fit.

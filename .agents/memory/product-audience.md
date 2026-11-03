@@ -43,3 +43,9 @@ The user wants chat and CV sections independently expandable to full-screen focu
 **Why:** The user explicitly asked to focus on each workspace section without the other panels taking space.
 
 **How to apply:** Preserve unsent text, pending replies and media state when changing layout; keep a visible restore/reopen control.
+
+The user wants a very easy-to-use home page, is interested in keeping everything on a single page without scrolling, and wants the stats better arranged.
+
+**Why:** The user asked to explore simpler UI/UX directions rather than adding more home-page sections.
+
+**How to apply:** Prioritise the next useful action, group meaningful stats, and remove repeated navigation/actions. Explore without replacing the working app until a direction is chosen; preserve readable content rather than clipping it to claim a single-screen fit.

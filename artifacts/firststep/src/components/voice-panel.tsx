@@ -35,16 +35,18 @@ function downsample(chunks: Float32Array[], from: number): Float32Array[] {
  * interview id is passed, the backend stores both transcripts in that
  * conversation and onSaved lets the caller refetch.
  */
-export function VoicePanel({ buildContext, applicationId, interviewId, onSaved, who = 'Coach', saveNote }: {
+export function VoicePanel({ buildContext, applicationId, interviewId, onSaved, onRecordingChange, who = 'Coach', saveNote }: {
   buildContext: () => string;
   applicationId?: string;
   interviewId?: string;
   onSaved?: () => void;
+  onRecordingChange?: (recording: boolean) => void;
   who?: string;
   saveNote: string;
 }) {
   const voice = useVoiceConversation();
   const [recording, setRecording] = useState(false);
+  useEffect(() => { onRecordingChange?.(recording); }, [recording, onRecordingChange]);
   const [error, setError] = useState<string | null>(null);
   const [turns, setTurns] = useState<VoiceTurn[]>([]);
   const [seconds, setSeconds] = useState(0);

@@ -49,6 +49,31 @@ export interface CvDocument {
   sections: CvSection[];
 }
 
+export type JobRequirementCategory = typeof JobRequirementCategory[keyof typeof JobRequirementCategory];
+
+
+export const JobRequirementCategory = {
+  required: 'required',
+  preferred: 'preferred',
+  responsibility: 'responsibility',
+} as const;
+
+export interface JobRequirement {
+  category: JobRequirementCategory;
+  skill: string;
+  explanation: string;
+  quote: string;
+}
+
+export interface JobAnalysis {
+  summary: string;
+  requirements: JobRequirement[];
+  yourStrengths: string[];
+  skillsToBuild: string[];
+  nextStep: string;
+  uncertainties: string[];
+}
+
 export interface Application {
   id: string;
   title: string;
@@ -60,6 +85,7 @@ export interface Application {
   messages: Message[];
   createdAt: string;
   cvDocument?: CvDocument;
+  jobAnalysis?: JobAnalysis;
 }
 
 export interface CoachInput {

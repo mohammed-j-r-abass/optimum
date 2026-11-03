@@ -84,6 +84,19 @@ export const GetDashboardResponse = zod.object({
   "bullets": zod.array(zod.string())
 }))
 }))
+}).optional(),
+  "jobAnalysis": zod.object({
+  "summary": zod.string(),
+  "requirements": zod.array(zod.object({
+  "category": zod.enum(['required', 'preferred', 'responsibility']),
+  "skill": zod.string(),
+  "explanation": zod.string(),
+  "quote": zod.string()
+})),
+  "yourStrengths": zod.array(zod.string()),
+  "skillsToBuild": zod.array(zod.string()),
+  "nextStep": zod.string(),
+  "uncertainties": zod.array(zod.string())
 }).optional()
 })),
   "interviews": zod.array(zod.object({
@@ -132,6 +145,19 @@ export const ListApplicationsResponseItem = zod.object({
   "bullets": zod.array(zod.string())
 }))
 }))
+}).optional(),
+  "jobAnalysis": zod.object({
+  "summary": zod.string(),
+  "requirements": zod.array(zod.object({
+  "category": zod.enum(['required', 'preferred', 'responsibility']),
+  "skill": zod.string(),
+  "explanation": zod.string(),
+  "quote": zod.string()
+})),
+  "yourStrengths": zod.array(zod.string()),
+  "skillsToBuild": zod.array(zod.string()),
+  "nextStep": zod.string(),
+  "uncertainties": zod.array(zod.string())
 }).optional()
 })
 export const ListApplicationsResponse = zod.array(ListApplicationsResponseItem)
@@ -169,6 +195,19 @@ export const CreateApplicationResponse = zod.object({
   "bullets": zod.array(zod.string())
 }))
 }))
+}).optional(),
+  "jobAnalysis": zod.object({
+  "summary": zod.string(),
+  "requirements": zod.array(zod.object({
+  "category": zod.enum(['required', 'preferred', 'responsibility']),
+  "skill": zod.string(),
+  "explanation": zod.string(),
+  "quote": zod.string()
+})),
+  "yourStrengths": zod.array(zod.string()),
+  "skillsToBuild": zod.array(zod.string()),
+  "nextStep": zod.string(),
+  "uncertainties": zod.array(zod.string())
 }).optional()
 })
 
@@ -203,6 +242,19 @@ export const GetApplicationResponse = zod.object({
   "bullets": zod.array(zod.string())
 }))
 }))
+}).optional(),
+  "jobAnalysis": zod.object({
+  "summary": zod.string(),
+  "requirements": zod.array(zod.object({
+  "category": zod.enum(['required', 'preferred', 'responsibility']),
+  "skill": zod.string(),
+  "explanation": zod.string(),
+  "quote": zod.string()
+})),
+  "yourStrengths": zod.array(zod.string()),
+  "skillsToBuild": zod.array(zod.string()),
+  "nextStep": zod.string(),
+  "uncertainties": zod.array(zod.string())
 }).optional()
 })
 
@@ -250,6 +302,19 @@ export const SendCoachMessageResponse = zod.object({
   "bullets": zod.array(zod.string())
 }))
 }))
+}).optional(),
+  "jobAnalysis": zod.object({
+  "summary": zod.string(),
+  "requirements": zod.array(zod.object({
+  "category": zod.enum(['required', 'preferred', 'responsibility']),
+  "skill": zod.string(),
+  "explanation": zod.string(),
+  "quote": zod.string()
+})),
+  "yourStrengths": zod.array(zod.string()),
+  "skillsToBuild": zod.array(zod.string()),
+  "nextStep": zod.string(),
+  "uncertainties": zod.array(zod.string())
 }).optional()
 })
 
@@ -284,6 +349,19 @@ export const GenerateCvResponse = zod.object({
   "bullets": zod.array(zod.string())
 }))
 }))
+}).optional(),
+  "jobAnalysis": zod.object({
+  "summary": zod.string(),
+  "requirements": zod.array(zod.object({
+  "category": zod.enum(['required', 'preferred', 'responsibility']),
+  "skill": zod.string(),
+  "explanation": zod.string(),
+  "quote": zod.string()
+})),
+  "yourStrengths": zod.array(zod.string()),
+  "skillsToBuild": zod.array(zod.string()),
+  "nextStep": zod.string(),
+  "uncertainties": zod.array(zod.string())
 }).optional()
 })
 
@@ -468,6 +546,53 @@ export const SaveLiveTranscriptsResponse = zod.object({
   "score": zod.number().nullable(),
   "scheduledAt": zod.string(),
   "createdAt": zod.string()
+})
+
+
+export const AnalyzeApplicationParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const AnalyzeApplicationResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "company": zod.string(),
+  "description": zod.string(),
+  "status": zod.string(),
+  "cv": zod.string(),
+  "advice": zod.string(),
+  "messages": zod.array(zod.object({
+  "role": zod.string(),
+  "content": zod.string()
+})),
+  "createdAt": zod.string(),
+  "cvDocument": zod.object({
+  "name": zod.string(),
+  "contact": zod.array(zod.string()),
+  "sections": zod.array(zod.object({
+  "title": zod.string(),
+  "entries": zod.array(zod.object({
+  "heading": zod.string(),
+  "detail": zod.string(),
+  "location": zod.string(),
+  "date": zod.string(),
+  "bullets": zod.array(zod.string())
+}))
+}))
+}).optional(),
+  "jobAnalysis": zod.object({
+  "summary": zod.string(),
+  "requirements": zod.array(zod.object({
+  "category": zod.enum(['required', 'preferred', 'responsibility']),
+  "skill": zod.string(),
+  "explanation": zod.string(),
+  "quote": zod.string()
+})),
+  "yourStrengths": zod.array(zod.string()),
+  "skillsToBuild": zod.array(zod.string()),
+  "nextStep": zod.string(),
+  "uncertainties": zod.array(zod.string())
+}).optional()
 })
 
 

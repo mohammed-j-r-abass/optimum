@@ -585,6 +585,36 @@
           }
         }
       }
+    },
+    "/applications/{id}/analysis": {
+      "post": {
+        "operationId": "analyzeApplication",
+        "tags": [
+          "firststep"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application with grounded job analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Application"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -708,6 +738,9 @@
           },
           "cvDocument": {
             "$ref": "#/components/schemas/CvDocument"
+          },
+          "jobAnalysis": {
+            "$ref": "#/components/schemas/JobAnalysis"
           }
         },
         "required": [
@@ -1108,6 +1141,77 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/CvSection"
+            }
+          }
+        }
+      },
+      "JobRequirement": {
+        "type": "object",
+        "required": [
+          "category",
+          "skill",
+          "explanation",
+          "quote"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "required",
+              "preferred",
+              "responsibility"
+            ]
+          },
+          "skill": {
+            "type": "string"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "quote": {
+            "type": "string"
+          }
+        }
+      },
+      "JobAnalysis": {
+        "type": "object",
+        "required": [
+          "summary",
+          "requirements",
+          "yourStrengths",
+          "skillsToBuild",
+          "nextStep",
+          "uncertainties"
+        ],
+        "properties": {
+          "summary": {
+            "type": "string"
+          },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobRequirement"
+            }
+          },
+          "yourStrengths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "skillsToBuild": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "nextStep": {
+            "type": "string"
+          },
+          "uncertainties": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }

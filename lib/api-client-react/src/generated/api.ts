@@ -1577,3 +1577,71 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       return useMutation(getSaveLiveTranscriptsMutationOptions(options));
     }
 
+export const getAnalyzeApplicationUrl = (id: string,) => {
+
+
+
+
+  return `/api/applications/${id}/analysis`
+}
+
+export const analyzeApplication = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<Application> => {
+
+  return customFetch<Application>(getAnalyzeApplicationUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getAnalyzeApplicationMutationKey = () => ['analyzeApplication'] as const;
+
+export const getAnalyzeApplicationMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof analyzeApplication>>, TError,AnalyzeApplicationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof analyzeApplication>>, TError,AnalyzeApplicationMutationVariables, TContext> => {
+
+const mutationKey = getAnalyzeApplicationMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof analyzeApplication>>, AnalyzeApplicationMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  analyzeApplication(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AnalyzeApplicationMutationResult = NonNullable<Awaited<ReturnType<typeof analyzeApplication>>>
+
+    export type AnalyzeApplicationMutationError = ErrorType<unknown>
+    export type AnalyzeApplicationMutationVariables = {id: string}
+
+    export const useAnalyzeApplication = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof analyzeApplication>>, TError,AnalyzeApplicationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof analyzeApplication>>,
+        TError,
+        AnalyzeApplicationMutationVariables,
+        TContext
+      > => {
+      return useMutation(getAnalyzeApplicationMutationOptions(options));
+    }
+

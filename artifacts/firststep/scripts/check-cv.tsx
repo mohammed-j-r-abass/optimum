@@ -22,6 +22,25 @@ assert.ok(JSON.stringify(noHeaders).includes('An account of real community exper
 
 for (const [label, doc] of [
   ['short', sample],
+  ['one-page', { ...sample, sections: [
+    ...sample.sections,
+    { title: 'Skills & Interests', entries: [
+      { heading: 'Languages', detail: 'Python, SQL, JavaScript', date: '', location: '', bullets: [] },
+      { heading: 'Tools', detail: 'SQLite, Git, spreadsheets', date: '', location: '', bullets: [] },
+    ] },
+    { title: 'Experience', entries: [
+      { heading: 'Community volunteer', detail: 'Neighbourhood learning centre', date: '2025–2026', location: '', bullets: [
+        'Welcomed learners, answered questions and helped organise weekly sessions at the local community learning centre.',
+        'Maintained attendance records and worked with other volunteers to prepare learning materials before each session.',
+      ] },
+    ] },
+    { title: 'Leadership Experience', entries: [
+      { heading: 'Class project coordinator', detail: 'University group project', date: '2026', location: '', bullets: [
+        'Coordinated tasks for a team of classmates and checked that everyone could explain the final project.',
+        'Recorded meeting notes and helped the team practise presenting its work in a clear, structured way.',
+      ] },
+    ] },
+  ] }],
   ['long', { ...sample, sections: [{ title: 'Projects', entries: Array.from({ length: 24 }, (_, i) => ({ heading: `Project ${i + 1}`, detail: 'A detailed project with multiple responsibilities', date: '2026', location: 'Community centre', bullets: Array.from({ length: 4 }, (_, b) => `Evidence ${i + 1}.${b + 1}: ${'Delivered practical support and documented work carefully. '.repeat(5)}`) })) }] }],
 ] as const) {
   const blob = await buildCvPdf(doc);

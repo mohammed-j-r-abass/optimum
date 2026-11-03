@@ -7,6 +7,7 @@ FirstStep helps first-time job seekers build truthful tailored CVs and practise 
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
 - `pnpm --filter @workspace/firststep run dev` — web app (use its managed workflow)
 - `pnpm run typecheck` — full typecheck across all packages
+- `pnpm --filter @workspace/scripts run test:live-audio` — audio packet and transcript-recovery regression checks
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
@@ -30,11 +31,10 @@ FirstStep helps first-time job seekers build truthful tailored CVs and practise 
 
 - Guest workspaces let applicants try the product before signing up. Signed-in Clerk accounts isolate saved information and claim the current browser's guest work when signing in.
 - AI must never invent experience or qualifications. Interview ratings assess answer quality, not hiring probability or inferred personality.
-- Interview practice uses Gemini Live for continuous interruptible audio and optional automatically shared camera frames at about one per second. CV coaching retains recorded turn-by-turn speech.
-- Live sessions use server-issued one-use ephemeral tokens locked to an interview configuration, with a ten-minute expiry and nine-minute UI call limit. The permanent Gemini key stays server-side.
-- Live user/model transcripts are saved with event IDs for duplicate-safe retries and reused for feedback; raw media is not saved by FirstStep.
-- Camera sharing is optional and visibly indicated. Visual coaching covers observable presentation only: no emotion, personality, disability or employability inference.
+- Live voice uses direct Gemini Live with server-issued single-use ephemeral tokens, streaming mono PCM, automatic speech interruption, bounded session resumption and saved text transcripts. `GEMINI_API_KEY` must have direct Live access and quota; the Replit AI proxy does not support Live. Calls expire after 20 minutes.
+- Camera is an opt-in local preview. During a live call a separate consent sends JPEG frames (about one per second) directly to Gemini for lighting/framing only. Explicit snapshots remain available for typed answers. No emotion, personality, disability or employability inference.
 - Files are transiently parsed into text. Original file bytes, camera snapshots and audio recordings are not retained.
+- Pending live transcript text has a tokenless, tab-scoped recovery copy in session storage. Reload recovery saves queued text and closes the abandoned call before enabling text practice. This copy is removed after successful save/close.
 
 ## Product
 

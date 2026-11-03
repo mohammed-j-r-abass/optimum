@@ -7,6 +7,59 @@
 import * as zod from 'zod';
 
 
+export const createLiveSessionBodyTargetIdMax = 100;
+
+
+
+export const CreateLiveSessionBody = zod.object({
+  "targetId": zod.string().min(1).max(createLiveSessionBodyTargetIdMax),
+  "kind": zod.enum(['interview', 'application']),
+  "microphoneConsent": zod.boolean()
+})
+
+export const CreateLiveSessionResponse = zod.object({
+  "id": zod.string(),
+  "token": zod.string(),
+  "model": zod.string(),
+  "expiresAt": zod.string()
+})
+
+
+export const SaveLiveTranscriptParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const saveLiveTranscriptBodyEventsItemIdMax = 100;
+
+export const saveLiveTranscriptBodyEventsItemContentMax = 15000;
+
+export const saveLiveTranscriptBodyEventsMax = 20;
+
+
+
+export const SaveLiveTranscriptBody = zod.object({
+  "events": zod.array(zod.object({
+  "id": zod.string().min(1).max(saveLiveTranscriptBodyEventsItemIdMax),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string().min(1).max(saveLiveTranscriptBodyEventsItemContentMax),
+  "partial": zod.boolean().optional()
+})).min(1).max(saveLiveTranscriptBodyEventsMax)
+})
+
+export const SaveLiveTranscriptResponse = zod.object({
+  "success": zod.boolean()
+})
+
+
+export const CloseLiveSessionParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const CloseLiveSessionResponse = zod.object({
+  "success": zod.boolean()
+})
+
+
 export const HealthCheckResponse = zod.object({
   "status": zod.string()
 })

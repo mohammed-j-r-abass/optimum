@@ -10,6 +10,31 @@
     }
   ],
   "paths": {
+    "/live/session": {
+      "post": {
+        "operationId": "createLiveSession",
+        "tags": ["firststep"],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LiveSessionInput" } } } },
+        "responses": { "200": { "description": "Short-lived Gemini Live credential; never cache", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LiveSessionResult" } } } } }
+      }
+    },
+    "/live/{id}/transcript": {
+      "post": {
+        "operationId": "saveLiveTranscript",
+        "tags": ["firststep"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LiveTranscriptBatchInput" } } } },
+        "responses": { "200": { "description": "Saved, including duplicate retries", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LiveSaveResult" } } } } }
+      }
+    },
+    "/live/{id}/close": {
+      "post": {
+        "operationId": "closeLiveSession",
+        "tags": ["firststep"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Closed", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LiveSaveResult" } } } } }
+      }
+    },
     "/healthz": {
       "get": {
         "operationId": "healthCheck",
@@ -619,6 +644,44 @@
   },
   "components": {
     "schemas": {
+      "LiveSessionInput": {
+        "type": "object",
+        "required": ["targetId", "kind", "microphoneConsent"],
+        "properties": {
+          "targetId": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "kind": { "type": "string", "enum": ["interview", "application"] },
+          "microphoneConsent": { "type": "boolean" }
+        }
+      },
+      "LiveSessionResult": {
+        "type": "object",
+        "required": ["id", "token", "model", "expiresAt"],
+        "properties": {
+          "id": { "type": "string" }, "token": { "type": "string" },
+          "model": { "type": "string" }, "expiresAt": { "type": "string" }
+        }
+      },
+      "LiveTranscriptBatchInput": {
+        "type": "object", "required": ["events"],
+        "properties": {
+          "events": {
+            "type": "array", "minItems": 1, "maxItems": 20,
+            "items": {
+              "type": "object", "required": ["id", "role", "content"],
+              "properties": {
+                "id": { "type": "string", "minLength": 1, "maxLength": 100 },
+                "role": { "type": "string", "enum": ["user", "assistant"] },
+                "content": { "type": "string", "minLength": 1, "maxLength": 15000 },
+                "partial": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      },
+      "LiveSaveResult": {
+        "type": "object", "required": ["success"],
+        "properties": { "success": { "type": "boolean" } }
+      },
       "HealthStatus": {
         "type": "object",
         "properties": {

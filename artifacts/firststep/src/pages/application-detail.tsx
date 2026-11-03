@@ -33,6 +33,7 @@ export default function ApplicationDetailPage() {
   const coachRef = useRef<HTMLElement>(null);
   const cvRef = useRef<HTMLElement>(null);
   const [micLive, setMicLive] = useState(false);
+  const [liveActive, setLiveActive] = useState(false);
   const [showReqs, setShowReqs] = useState(false);
   const [showVoice, setShowVoice] = useState(false);
   useFocusPanel(focus === 'coach' ? coachRef : focus === 'cv' ? cvRef : null, () => setFocus('none'));
@@ -88,7 +89,7 @@ export default function ApplicationDetailPage() {
 
   function submit(msg: string) {
     const m = msg.trim();
-    if (!m) return;
+    if (!m || liveActive || send.isPending) return;
     setPendingText(m);
     setText('');
     send.mutate({ id, data: { message: m } }, {
@@ -120,7 +121,7 @@ export default function ApplicationDetailPage() {
           <h1 className="text-3xl font-semibold text-ink md:text-4xl" data-testid="text-app-title">{app.title}</h1>
           <p className="text-muted-foreground">{app.company}</p>
         </div>
-        <Button onClick={generate} disabled={gen.isPending} className="bg-clay hover:bg-clay/90" data-testid="button-generate-cv">
+        <Button onClick={generate} disabled={liveActive || gen.isPending} className="bg-clay hover:bg-clay/90" data-testid="button-generate-cv">
           {gen.isPending ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : app.cv ? <RefreshCw className="mr-1.5 h-4 w-4" /> : <Sparkles className="mr-1.5 h-4 w-4" />}
           {gen.isPending ? 'Writing your CV' : app.cv ? 'Rewrite CV' : 'Write my CV now'}
         </Button>
@@ -152,17 +153,17 @@ export default function ApplicationDetailPage() {
             } />
           </div>
           <div className={`${chatFocused ? 'hidden' : 'flex'} flex-wrap gap-2`}>
-            {STARTERS.map((s) => <button key={s} onClick={() => submit(s)} disabled={send.isPending} className="rounded-full border bg-card px-3 py-1.5 text-xs transition hover:-translate-y-0.5 hover:border-clay hover:text-clay" data-testid={`button-starter-${s.slice(0, 10)}`}>{s}</button>)}
+            {STARTERS.map((s) => <button key={s} onClick={() => submit(s)} disabled={liveActive || send.isPending} className="rounded-full border bg-card px-3 py-1.5 text-xs transition hover:-translate-y-0.5 hover:border-clay hover:text-clay" data-testid={`button-starter-${s.slice(0, 10)}`}>{s}</button>)}
           </div>
           <form onSubmit={(e) => { e.preventDefault(); submit(text); }} className="flex shrink-0 items-end gap-2 rounded-2xl border bg-card p-2">
             <Textarea value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(text); } }} rows={2} placeholder="Type your answer, or ask for CV changes" className="resize-none border-0 bg-transparent shadow-none focus-visible:ring-0" data-testid="input-coach-message" />
-            <Button type="submit" size="icon" disabled={send.isPending || !text.trim()} aria-label="Send" data-testid="button-send-coach"><Send className="h-4 w-4" /></Button>
+            <Button type="submit" size="icon" disabled={liveActive || send.isPending || !text.trim()} aria-label="Send" data-testid="button-send-coach"><Send className="h-4 w-4" /></Button>
           </form>
           {chatFocused && !micLive && (
             <button type="button" onClick={() => setShowVoice((v) => !v)} aria-expanded={showVoice} aria-controls="coach-voice" className="shrink-0 self-start text-xs font-medium text-muted-foreground underline-offset-2 hover:text-clay hover:underline" data-testid="button-toggle-voice">{showVoice ? 'Hide voice chat' : 'Show voice chat'}</button>
           )}
           <div id="coach-voice" className={chatFocused ? (showVoice || micLive ? 'max-h-[35dvh] shrink-0 overflow-y-auto' : 'hidden') : ''}>
-            <VoicePanel buildContext={context} applicationId={id} onSaved={() => refresh({ applicationId: id })} onRecordingChange={setMicLive} saveNote="What you say and the reply are added to this conversation." />
+            <VoicePanel buildContext={context} applicationId={id} disabled={send.isPending || gen.isPending} onLiveChange={setLiveActive} onSaved={() => refresh({ applicationId: id })} onRecordingChange={setMicLive} saveNote="What you say and the reply are added to this conversation." />
           </div>
         </section>
 

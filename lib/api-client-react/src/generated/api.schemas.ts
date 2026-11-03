@@ -4,6 +4,66 @@
  * Api
  * OpenAPI spec version: 1.0.0
  */
+export type LiveSessionInputKind = typeof LiveSessionInputKind[keyof typeof LiveSessionInputKind];
+
+
+export const LiveSessionInputKind = {
+  interview: 'interview',
+  application: 'application',
+} as const;
+
+export interface LiveSessionInput {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  targetId: string;
+  kind: LiveSessionInputKind;
+  microphoneConsent: boolean;
+}
+
+export interface LiveSessionResult {
+  id: string;
+  token: string;
+  model: string;
+  expiresAt: string;
+}
+
+export type LiveTranscriptBatchInputEventsItemRole = typeof LiveTranscriptBatchInputEventsItemRole[keyof typeof LiveTranscriptBatchInputEventsItemRole];
+
+
+export const LiveTranscriptBatchInputEventsItemRole = {
+  user: 'user',
+  assistant: 'assistant',
+} as const;
+
+export type LiveTranscriptBatchInputEventsItem = {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  id: string;
+  role: LiveTranscriptBatchInputEventsItemRole;
+  /**
+     * @minLength 1
+     * @maxLength 15000
+     */
+  content: string;
+  partial?: boolean;
+};
+
+export interface LiveTranscriptBatchInput {
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  events: LiveTranscriptBatchInputEventsItem[];
+}
+
+export interface LiveSaveResult {
+  success: boolean;
+}
+
 export interface HealthStatus {
   status: string;
 }

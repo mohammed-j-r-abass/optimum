@@ -1,0 +1,28 @@
+kind = "slides"
+previewPath = "/optimum-pitch/"
+title = "Optimum — Two-minute pitch"
+description = "A six-slide pitch about helping rural first-time applicants discover, demonstrate and communicate their fit for a job."
+version = "1.0.0"
+id = "artifacts/optimum-pitch"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/optimum-pitch/" ]
+localPort = 26116
+
+[services.development]
+run = "pnpm --filter @workspace/optimum-pitch run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/optimum-pitch", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/optimum-pitch/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "26116"
+BASE_PATH = "/optimum-pitch/"

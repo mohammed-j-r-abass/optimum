@@ -13,7 +13,7 @@ function AuthLayout({ children, line }: { children: ReactNode; line: string }) {
           <path d="M20 210h90v-50h90v-50h90v-50h90" stroke="hsl(39 77% 60%)" strokeWidth="14" fill="none" strokeLinecap="round" strokeLinejoin="round" />
           <circle cx="400" cy="34" r="20" fill="hsl(16 68% 54%)" />
         </svg>
-        <p className="font-display text-2xl">First<span className="text-millet">Step</span></p>
+        <p className="font-display text-2xl">Opti<span className="text-millet">mum</span></p>
         <div className="relative max-w-md">
           <p className="font-display text-4xl leading-tight">{line}</p>
           <p className="mt-4 text-primary-foreground/70">Your story, CVs and practice follow you to any phone or computer.</p>
@@ -30,7 +30,7 @@ function AuthLayout({ children, line }: { children: ReactNode; line: string }) {
 export function SignInPage() {
   return (
     <AuthLayout line="Good to see you again. Let us pick up where you left off.">
-      <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
+      <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} fallbackRedirectUrl={`${basePath}/dashboard`} />
     </AuthLayout>
   );
 }
@@ -38,7 +38,7 @@ export function SignInPage() {
 export function SignUpPage() {
   return (
     <AuthLayout line="The work you have already done deserves to be seen.">
-      <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
+      <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} fallbackRedirectUrl={`${basePath}/dashboard`} />
     </AuthLayout>
   );
 }

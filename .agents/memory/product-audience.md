@@ -1,8 +1,8 @@
 ---
-name: FirstStep audience and scope
+name: Career coach audience and scope
 description: User-stated audience and principles for career preparation.
 ---
-FirstStep is primarily for graduating, first-time job seekers from rural areas who have not had access to CV-writing and interview preparation support. The user wants an appealing MVP, not something overly fancy.
+The product is primarily for graduating, first-time job seekers from rural areas who have not had access to CV-writing and interview preparation support. The user wants an appealing MVP, not something overly fancy.
 
 **Why:** The user described a final-year student repeatedly applying without knowing what employers expect.
 

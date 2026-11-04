@@ -1,21 +1,22 @@
-import { useEffect, useRef, type ReactNode } from 'react';
-import { ClerkProvider, Show, useClerk } from '@clerk/react';
+import { lazy, Suspense, useEffect, useRef, type ReactNode } from 'react';
+import { ClerkProvider, useClerk } from '@clerk/react';
 import { publishableKeyFromHost } from '@clerk/react/internal';
 import { shadcn } from '@clerk/themes';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
-import { Redirect, Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
+import { Route, Switch, useLocation } from 'wouter';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { AppShell } from '@/components/app-shell';
 import NotFound from '@/pages/not-found';
-import DashboardPage from '@/pages/dashboard';
-import ProfilePage from '@/pages/profile';
-import ApplicationsPage from '@/pages/applications';
-import ApplicationDetailPage from '@/pages/application-detail';
-import InterviewsPage from '@/pages/interviews';
-import ResourcesPage from '@/pages/resources';
 import { SignInPage, SignUpPage } from '@/pages/auth';
+
+const DashboardPage = lazy(() => import('@/pages/dashboard'));
+const ProfilePage = lazy(() => import('@/pages/profile'));
+const ApplicationsPage = lazy(() => import('@/pages/applications'));
+const ApplicationDetailPage = lazy(() => import('@/pages/application-detail'));
+const InterviewsPage = lazy(() => import('@/pages/interviews'));
+const ResourcesPage = lazy(() => import('@/pages/resources'));
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false, retry: 1 } } });
 
@@ -100,23 +101,15 @@ function ClerkQueryClientCacheInvalidator() {
       }
       prevUserIdRef.current = userId;
     });
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+      // The public landing page does not mount Clerk. Never retain private
+      // query results while the workspace's identity listener is unmounted.
+      qc.clear();
+    };
   }, [addListener, qc]);
 
   return null;
-}
-
-function HomeRedirect() {
-  return (
-    <>
-      <Show when="signed-in">
-        <Redirect to="/dashboard" />
-      </Show>
-      <Show when="signed-out">
-        <AppShell><DashboardPage /></AppShell>
-      </Show>
-    </>
-  );
 }
 
 function RoutedErrorBoundary({ children }: { children: ReactNode }) {
@@ -128,6 +121,7 @@ function ShellRoutes() {
   return (
     <AppShell>
       <RoutedErrorBoundary>
+        <Suspense fallback={<div className="py-12 text-muted-foreground" role="status">Loading your page…</div>}>
         <Switch>
           <Route path="/dashboard" component={DashboardPage} />
           <Route path="/profile" component={ProfilePage} />
@@ -137,6 +131,7 @@ function ShellRoutes() {
           <Route path="/resources" component={ResourcesPage} />
           <Route component={NotFound} />
         </Switch>
+        </Suspense>
       </RoutedErrorBoundary>
     </AppShell>
   );
@@ -163,7 +158,6 @@ function ClerkProviderWithRoutes() {
         <ClerkQueryClientCacheInvalidator />
         <TooltipProvider>
           <Switch>
-            <Route path="/" component={HomeRedirect} />
             <Route path="/sign-in/*?" component={SignInPage} />
             <Route path="/sign-up/*?" component={SignUpPage} />
             <Route component={ShellRoutes} />
@@ -176,11 +170,7 @@ function ClerkProviderWithRoutes() {
 }
 
 function App() {
-  return (
-    <WouterRouter base={basePath}>
-      <ClerkProviderWithRoutes />
-    </WouterRouter>
-  );
+  return <ClerkProviderWithRoutes />;
 }
 
 export default App;

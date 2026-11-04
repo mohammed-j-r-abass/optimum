@@ -1,0 +1,50 @@
+[
+  {
+    "id": "b315647c-9ff2-436e-874a-d0c610675aa1",
+    "position": 1,
+    "filepath": "src/pages/slides/Optimum.tsx",
+    "title": "Optimum",
+    "description": "Career guidance for rural first-time job seekers.",
+    "speakerNotes": "- 0:00–0:10\n- Optimum helps rural first-time job seekers understand what employers need, discover relevant experience, and communicate their fit."
+  },
+  {
+    "id": "b315647c-9ff2-436e-874a-d0c610675aa2",
+    "position": 2,
+    "filepath": "src/pages/slides/Problem.tsx",
+    "title": "“I keep applying. I never hear back.”",
+    "description": "Limited access to guidance leaves applicants without a clear next step.",
+    "speakerNotes": "- 0:10–0:28\n- Imagine a final-year student repeatedly applying without hearing back. She may have useful experience, but limited access to career guidance. She does not know what employers need or which examples demonstrate a match."
+  },
+  {
+    "id": "b315647c-9ff2-436e-874a-d0c610675aa3",
+    "position": 3,
+    "filepath": "src/pages/slides/Alternatives.tsx",
+    "title": "A better-looking CV is not the whole answer.",
+    "description": "Presentation tools do not automatically solve experience discovery or access to coaching.",
+    "speakerNotes": "- 0:28–0:48\n- Templates improve presentation. Some builders start from scratch, but an applicant can still struggle to identify relevant evidence. Uploading a CV can leave useful experiences undiscovered. Human coaching can help, but may be out of reach."
+  },
+  {
+    "id": "b315647c-9ff2-436e-874a-d0c610675aa4",
+    "position": 4,
+    "filepath": "src/pages/slides/Conversation.tsx",
+    "title": "Start with a conversation, not a CV.",
+    "description": "Understand the job, discover evidence, and assess truthful fit.",
+    "speakerNotes": "- 0:48–1:13\n- Optimum begins with the employer's needs, then talks with the applicant. It asks about actual tasks from school, projects, work and community life. It selects examples that demonstrate fit, explains what does not belong, and identifies skills the applicant still needs to build."
+  },
+  {
+    "id": "b315647c-9ff2-436e-874a-d0c610675aa5",
+    "position": 5,
+    "filepath": "src/pages/slides/Preparation.tsx",
+    "title": "From real experience to a stronger application.",
+    "description": "Tailored CVs and scheduled live interview preparation.",
+    "speakerNotes": "- 1:13–1:38\n- Confirmed information becomes a clear CV tailored to that job. Then the applicant schedules live voice or video practice matched to the role. Specific feedback guides what to practise before the next session. The aim is stronger preparation, never invented experience or a guaranteed job."
+  },
+  {
+    "id": "b315647c-9ff2-436e-874a-d0c610675aa6",
+    "position": 6,
+    "filepath": "src/pages/slides/Access.tsx",
+    "title": "Career guidance should not depend on where you live.",
+    "description": "Accessible, voice-first support with honest connectivity requirements.",
+    "speakerNotes": "- 1:38–1:55\n- No existing CV is required. Lightweight pages and voice-first participation reduce unnecessary downloads; video remains available. Live AI needs an internet connection. Optimum helps applicants match real experience to opportunity."
+  }
+]

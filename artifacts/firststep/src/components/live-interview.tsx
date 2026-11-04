@@ -52,7 +52,7 @@ export function LiveInterview({ interviewId, onSaved, onBusyChange }: {
                 {live.status === 'idle' ? 'Start live call' : 'Reconnect'}: send my microphone{shareCam ? ' and camera' : ''} to Google
               </Button>
               <p className="text-[11px] leading-relaxed text-muted-foreground">
-                Audio{shareCam ? ' and video frames' : ''} stream to Google's Gemini Live service during the call. FirstStep saves the written transcript, not audio or video. Google processes the stream under its service policies. {live.status !== 'idle' && 'Reconnect starts a new call that continues from your saved transcript.'} The interviewer does not infer emotions, personality or ability from your appearance.
+                Audio{shareCam ? ' and video frames' : ''} stream to Google's Gemini Live service during the call. Optimum saves the written transcript, not audio or video. Google processes the stream under its service policies. {live.status !== 'idle' && 'Reconnect starts a new call that continues from your saved transcript.'} The interviewer does not infer emotions, personality or ability from your appearance.
               </p>
             </div>
           )}

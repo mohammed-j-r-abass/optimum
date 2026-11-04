@@ -52,7 +52,7 @@ export function DashboardView({ data, firstName = '', signedIn = false }: { data
     <div className="fs-next-page">
       <header className="fs-next-topline">
         <div>
-          <div className="fs-next-overline">YOUR FIRSTSTEP HOME <span>·</span> {signedIn ? 'SAVED TO YOUR ACCOUNT' : 'GUEST WORKSPACE'}</div>
+          <div className="fs-next-overline">YOUR OPTIMUM HOME <span>·</span> {signedIn ? 'SAVED TO YOUR ACCOUNT' : 'GUEST WORKSPACE'}</div>
           <h1>{name ? `Welcome back, ${name}` : 'Your first step starts here'}<span>.</span></h1>
           <p className="fs-next-welcome">Small steps make a strong story. Here’s yours today.</p>
         </div>

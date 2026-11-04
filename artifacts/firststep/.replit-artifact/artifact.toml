@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "FirstStep"
+title = "Optimum"
 description = "An encouraging AI career companion for first-time job seekers: build honest tailored CVs and practise interviews through text, voice and optional camera feedback."
 version = "1.0.0"
 id = "artifacts/firststep"

@@ -99,7 +99,7 @@ export function VoicePanel({ applicationId, interviewId, onSaved, who = 'Coach',
       <p className="text-sm font-semibold">Live conversation with {who}</p>
       <p className="mt-1 text-xs text-muted-foreground">
         Gemini Live hears your microphone while connected and replies aloud. You can speak over a reply to interrupt.
-        Audio is sent to Google to process, not stored by FirstStep. Transcripts are saved. {saveNote}
+        Audio is sent to Google to process, not stored by Optimum. Transcripts are saved. {saveNote}
         Camera sharing needs a separate choice. Only answer text counts toward your score, never your voice or appearance.
       </p>
       {!active && <label className="my-3 flex items-start gap-2 text-sm">

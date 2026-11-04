@@ -13,7 +13,7 @@ export function Wordmark({ light = false }: { light?: boolean }) {
     <span className="flex items-center gap-2.5">
       <LogoMark />
       <span className={`font-display text-xl font-semibold ${light ? 'text-sidebar-foreground' : 'text-ink'}`}>
-        First<span className="text-clay">Step</span>
+        Opti<span className="text-clay">mum</span>
       </span>
     </span>
   );

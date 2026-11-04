@@ -90,7 +90,7 @@ export function CameraPanel({ snapshot, onSnapshot, liveActive = false, liveConn
       )}
       {error && <p className="mt-2 text-sm text-destructive" data-testid="text-camera-error">{error}</p>}
       {on && <p className="mt-2 text-xs text-muted-foreground" role="status">
-        {sharing && liveConnected ? 'Sharing live frames with Google Gemini (about one per second). Not stored by FirstStep.' : 'Local preview only. No camera frames are being sent.'}
+        {sharing && liveConnected ? 'Sharing live frames with Google Gemini (about one per second). Not stored by Optimum.' : 'Local preview only. No camera frames are being sent.'}
       </p>}
       {on && liveConnected && <label className="mt-3 flex items-start gap-2 text-xs">
         <input type="checkbox" checked={sharing} onChange={e => {

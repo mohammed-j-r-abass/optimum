@@ -8,6 +8,18 @@ FirstStep is primarily for graduating, first-time job seekers from rural areas w
 
 **How to apply:** Use beginner-friendly language; help users identify real evidence from volunteering, school and everyday responsibilities. Discover relevant experience through questions, explain skill gaps constructively, and let the user proceed with an honest application even when the fit is weak. Do not assume a rural location itself implies limited skills.
 
+The user defines the central disadvantage as limited access to resources, opportunities and application coaching—not limited ability. The value proposition is to help first-time applicants understand an employer's need, discover experiences that demonstrate relevant skills, and communicate their best truthful fit through a tailored CV and interview preparation. An existing CV must not be a prerequisite.
+
+**Why:** The user explicitly explained the hiring problem as skills/experience-to-job fit and contrasted conversational discovery with simply polishing whatever experiences an applicant already wrote down.
+
+**How to apply:** Lead product explanations and pitches with access to guidance and the job-fit process. Do not promise employment or imply that poor applications are the only reason for rejection.
+
+The app must be lightweight for rural users with poor internet access, without removing live conversation from the core product.
+
+**Why:** The user explicitly linked limited connectivity to the target audience.
+
+**How to apply:** Minimise initial downloads and unnecessary network requests, offer voice-first participation with optional video, and explain that live AI requires a connection. Do not imply offline live interviews.
+
 Live audio-and-visual conversation is core MVP scope, not an optional later enhancement. The user explicitly rejected typed chat or recorded turn-by-turn voice with manually shared snapshots as a substitute.
 
 **Why:** The user identifies a live AI interviewer that can hear and see the applicant as the product's main distinction from ordinary interview advice and text chat.

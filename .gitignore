@@ -53,3 +53,24 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Credentials and private workspace material
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+credentials.json
+service-account*.json
+/.agents/
+/.config/
+/attached_assets/
+
+# Local release snapshots and private audit reports
+/generated-artifacts/
+
+# Python release utilities
+__pycache__/
+*.py[cod]
+.slide-thumbnails/

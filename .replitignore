@@ -3,3 +3,10 @@
 
 # No need to store the pnpm store twice.
 .local
+
+# Private development context and generated release output
+.agents
+.config
+.env
+.env.*
+generated-artifacts

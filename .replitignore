@@ -10,3 +10,16 @@
 .env
 .env.*
 generated-artifacts
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+.netrc
+.pypirc
+id_rsa
+id_ed25519
+credentials*.json
+*service-account*.json
+attached_assets

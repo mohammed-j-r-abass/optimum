@@ -71,7 +71,7 @@ personal email private.
 - Confirm third-party notices are retained.
 - Inspect the README, source, commit metadata and public assets for private data.
 - Confirm no `.env`, service credentials, database dumps, real CVs, recordings,
-  transcripts or internal agent notes are included.
+  transcripts or private development notes are included.
 - Review security findings and resolve release blockers.
 - Run the setup and validation commands against a separate development database.
 - Check the programme's actual submission and visibility requirements.

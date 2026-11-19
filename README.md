@@ -3,7 +3,7 @@
 **Helping first-time job seekers understand, demonstrate and communicate
 their fit for a job.**
 
-Optimum is an AI career-preparation MVP designed especially for applicants
+Optimum is a career-preparation platform designed especially for applicants
 with limited access to career guidance, including people in rural areas.
 Limited access to support is not a lack of ability.
 
@@ -22,8 +22,8 @@ requirements and a conversation about the applicant's real experience.
 - Lets applicants try a guest workspace and save progress to an account.
 - Includes a six-slide, two-minute pitch accessible from the landing page.
 
-The AI should guide inexperienced applicants, never invent qualifications or
-promise employment. Camera coaching is limited to observable presentation,
+The coaching experience helps applicants identify relevant evidence without
+inventing qualifications or promising employment. Camera coaching is limited to observable presentation,
 such as framing and lighting—not inferred emotions, personality or ability.
 
 ## Connectivity and privacy
@@ -54,8 +54,8 @@ original files. Provider terms and data handling still apply.
 | `lib/db/` | PostgreSQL schema and Drizzle configuration |
 | `scripts/` | Regression tests and release-preparation utilities |
 
-The public release excludes internal agent notes, uploaded documents, private
-workspace state, generated output, credentials and the design mockup sandbox.
+The source distribution excludes development notes, uploaded documents, private
+workspace state, generated output, credentials and experimental design files.
 No database contents or applicant records are included.
 
 ## Run on Replit
@@ -162,8 +162,6 @@ create a repository, publish a deployment, or change the original Git history.
 ## Licence
 
 Original project contributions are released under the [MIT licence](LICENSE).
-The copyright notice uses the project owner's supplied GitHub handle,
-`mohammed-j-r-abass`.
 
 Third-party dependencies and derived components retain their own licences;
 see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The MIT licence does not

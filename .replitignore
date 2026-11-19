@@ -7,11 +7,13 @@
 # Private development context and generated release output
 .agents
 .config
-.env
-.env.*
+.env*
+.envrc
+.secrets*
 generated-artifacts
 *.pem
 *.key
+*.p8
 *.p12
 *.pfx
 *.keystore
@@ -23,3 +25,14 @@ id_ed25519
 credentials*.json
 *service-account*.json
 attached_assets
+secrets
+secret
+*api-key*
+*api_key*
+*apikey*
+*.secret
+*.secrets
+private
+private-data
+*.tfstate
+*.tfstate.*

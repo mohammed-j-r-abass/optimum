@@ -32,7 +32,7 @@ The public landing page loads independently of the account and workspace
 tools. Workspace pages load on demand, and the presentation is loaded only
 when opened. Camera sharing is optional and off by default.
 
-**Live AI still requires an internet connection and provider quota.**
+**Live coaching still requires an internet connection and provider quota.**
 This is not an offline interview service.
 
 Profiles, job applications, CVs and interview transcripts are persisted in
@@ -76,24 +76,14 @@ and use the existing managed workflows.
 
 ### Configuration
 
-Configure these variables using the workspace's secrets/environment settings.
-Do not put actual credentials in source control.
-
-| Variable | Purpose |
-| --- | --- |
-| `DATABASE_URL` | PostgreSQL connection string |
-| `SESSION_SECRET` | A strong random secret for signing guest cookies |
-| `CLERK_SECRET_KEY` | Server-side Clerk credential |
-| `CLERK_PUBLISHABLE_KEY` | Backend Clerk publishable configuration |
-| `VITE_CLERK_PUBLISHABLE_KEY` | Browser-side Clerk publishable configuration; never a secret key |
-| `VITE_CLERK_PROXY_URL` | Clerk proxy URL when required by the hosting/auth configuration |
-| `AI_INTEGRATIONS_OPENAI_API_KEY` | Credential consumed by the OpenAI-compatible AI client |
-| `AI_INTEGRATIONS_OPENAI_BASE_URL` | Base URL for that AI provider |
-| `GEMINI_API_KEY` | Server-only key used to issue constrained live-session access |
+Add the required database, authentication and model-provider credentials
+through the hosting platform's secrets manager. Keep all credential values
+out of source files, examples, commits, logs, screenshots and documentation.
+Use only server-side configuration for private credentials. Browser-exposed
+variables must never contain secret values.
 
 Replit's managed workflows supply service-specific `PORT` and `BASE_PATH`
-values. Never place server secrets in `VITE_` variables: Vite exposes those
-values in the browser bundle.
+values.
 
 ### Install, initialise and check
 

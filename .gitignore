@@ -55,12 +55,23 @@ Thumbs.db
 .local/
 
 # Credentials and private workspace material
-.env
-.env.*
-!.env.example
-!.env.*.example
+.env*
+.envrc
+.secrets*
+secrets/
+secret/
+**/secrets/**
+**/secret/**
+*api-key*
+*api_key*
+*apikey*
+*.secret
+*.secrets
+private/
+private-data/
 *.pem
 *.key
+*.p8
 *.p12
 *.pfx
 *.keystore
@@ -68,12 +79,16 @@ Thumbs.db
 .npmrc.local
 .netrc
 .pypirc
+/.aws/
+/.ssh/
 id_rsa
 id_ed25519
 credentials.json
 credentials*.json
 service-account*.json
 *service-account*.json
+*.tfstate
+*.tfstate.*
 *.sqlite
 *.sqlite3
 *.db

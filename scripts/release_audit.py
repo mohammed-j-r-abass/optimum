@@ -16,11 +16,17 @@ SKIP_DIRS = {
 SECRET_RULES = {
     "private_key": re.compile(rb"-----BEGIN (?:RSA |OPENSSH |EC |DSA )?PRIVATE KEY-----"),
     "github_token": re.compile(rb"\b(?:gh[pousr]_[A-Za-z0-9]{25,}|github_pat_[A-Za-z0-9_]{30,})\b"),
+    "gitlab_token": re.compile(rb"\bglpat-[A-Za-z0-9_-]{20,}\b"),
+    "slack_token": re.compile(rb"\bxox[baprs]-[A-Za-z0-9-]{20,}\b"),
     "npm_token": re.compile(rb"\bnpm_[A-Za-z0-9]{30,}\b"),
     "openai_style_key": re.compile(rb"\bsk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{24,}\b"),
+    "anthropic_style_key": re.compile(rb"\bsk-ant-[A-Za-z0-9_-]{20,}\b"),
     "google_api_key": re.compile(rb"\bAIza[0-9A-Za-z_-]{30,}\b"),
     "secret_test_or_live_key": re.compile(rb"\bsk_(?:test|live)_[A-Za-z0-9]{20,}\b"),
+    "stripe_restricted_key": re.compile(rb"\brk_(?:test|live)_[A-Za-z0-9]{20,}\b"),
     "aws_access_key_id": re.compile(rb"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b"),
+    "sendgrid_key": re.compile(rb"\bSG\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\b"),
+    "twilio_auth_token": re.compile(rb"\bSK[0-9a-fA-F]{32}\b"),
     "credentialed_database_url": re.compile(rb"postgres(?:ql)?://[^:\s/'\"]+:[^@\s/'\"]+@"),
     "jwt_literal": re.compile(rb"\beyJ[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{15,}\b"),
     "quoted_credential": re.compile(
@@ -40,11 +46,14 @@ def git(*args):
 
 def protected_name(path):
     name = Path(path).name.lower()
-    example = name == ".env.example" or name.endswith(".example")
     return (
-        (name.startswith(".env") and not example)
+        name.startswith(".env")
         or name.endswith((".pem", ".key", ".p12", ".pfx"))
-        or name == "credentials.json"
+        or name.endswith((".p8", ".keystore", ".jks", ".mobileprovision"))
+        or "credential" in name
+        or "api-key" in name
+        or "api_key" in name
+        or "apikey" in name
         or (name.startswith("service-account") and name.endswith(".json"))
     )
 

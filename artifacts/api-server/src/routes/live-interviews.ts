@@ -4,6 +4,7 @@ import { GoogleGenAI, Modality, type LiveConnectConfig } from "@google/genai";
 import { and, eq, gte } from "drizzle-orm";
 import { db, careerRecords } from "@workspace/db";
 import { SaveLiveTranscriptsBody } from "@workspace/api-zod";
+import type { LiveTranscriptBatchInputEventsItem } from "@workspace/api-zod";
 import { coachRules } from "../lib/ai";
 
 type Data = Record<string, any>;
@@ -90,7 +91,7 @@ ${context}` }],
     const parsed = SaveLiveTranscriptsBody.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: "Invalid transcript batch." }); return; }
     const { sessionId, events } = parsed.data;
-    if (events.length > 50 || events.some(e => !/^[0-9a-f-]{36}$/i.test(e.id) || !e.content.trim() || e.content.length > 20000 || !["user", "assistant"].includes(e.role))) {
+    if (events.length > 50 || events.some((e: LiveTranscriptBatchInputEventsItem) => !/^[0-9a-f-]{36}$/i.test(e.id) || !e.content.trim() || e.content.length > 20000 || !["user", "assistant"].includes(e.role))) {
       res.status(400).json({ error: "Send up to 50 nonempty transcript events, each under 20,000 characters." }); return;
     }
     const owner = String(res.locals.owner);
@@ -102,11 +103,11 @@ ${context}` }],
       if (!row) return { error: "Interview not found.", status: 404 };
       const data = row.data as Data;
       const eventIds = new Set((session.data.eventIds as string[]) ?? []);
-      const fresh = events.filter(e => { if (eventIds.has(e.id)) return false; eventIds.add(e.id); return true; });
+      const fresh = events.filter((e: LiveTranscriptBatchInputEventsItem) => { if (eventIds.has(e.id)) return false; eventIds.add(e.id); return true; });
       if (!fresh.length) return { data };
       if (data.status === "completed") return { error: "This interview is complete. Its transcript cannot be changed.", status: 409 };
       if (eventIds.size > 1000) return { error: "This session has reached its transcript limit. Stop and start another practice.", status: 429 };
-      data.messages = [...data.messages, ...fresh.map(e => ({ role: e.role, content: e.content }))];
+      data.messages = [...data.messages, ...fresh.map((e: LiveTranscriptBatchInputEventsItem) => ({ role: e.role, content: e.content }))];
       await tx.update(careerRecords).set({ data }).where(eq(careerRecords.id, interviewId));
       await tx.update(careerRecords).set({ data: { ...session.data, eventIds: [...eventIds] } }).where(eq(careerRecords.id, sessionId));
       return { data };

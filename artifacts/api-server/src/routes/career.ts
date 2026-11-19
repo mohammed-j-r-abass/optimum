@@ -1,9 +1,11 @@
 import { Router, type Request, type Response } from "express";
+import type { ZodType } from "zod";
 import { getAuth } from "@clerk/express";
 import { createHash, randomUUID } from "node:crypto";
 import { and, eq, desc, sql } from "drizzle-orm";
 import { db, careerRecords } from "@workspace/db";
 import { SaveProfileBody, CreateApplicationBody, SendCoachMessageBody, CreateInterviewBody, SendInterviewTurnBody, ImportDocumentBody, VoiceConversationBody, ResearchCareersBody } from "@workspace/api-zod";
+import type { LiveTranscriptBatchInputEventsItem } from "@workspace/api-zod";
 import { ask, askCvCoach, openai, coachRules, resumeGuidance } from "../lib/ai";
 import { cvDocumentSchema, cvResponseFormat, cvToText, cvWritingInstructions } from "../lib/cv-document";
 import mammoth from "mammoth";
@@ -107,7 +109,7 @@ async function jobAnalysis(o: string, a: Data, p: Data): Promise<JobAnalysis> {
   pendingAnalyses.set(key, task);
   try { return await task; } finally { pendingAnalyses.delete(key); }
 }
-function parse<T>(schema: { safeParse: (v: unknown) => { success: boolean; data?: T } }, req: Request, res: Response): T | undefined {
+function parse<S extends ZodType>(schema: S, req: Request, res: Response): S["_output"] | undefined {
   const p = schema.safeParse(req.body);
   if (!p.success) { res.status(400).json({ error: "Please complete the required fields." }); return; }
   return p.data;
@@ -362,15 +364,15 @@ router.post("/live/:id/transcript", async (req, res) => {
     if (!target) return 404;
     const data = target.data as Data;
     const seen = new Set<string>(session.events);
-    const fresh = input.events.filter(e => {
+    const fresh = input.events.filter((e: LiveTranscriptBatchInputEventsItem) => {
       if (seen.has(e.id)) return false;
       seen.add(e.id); return true;
     });
     if (!fresh.length) return 200; // Network retries must not duplicate answers.
     if (data.status === "completed") return 409;
     if (session.events.length + fresh.length > 2000) return 413;
-    data.messages = [...data.messages, ...fresh.map(e => ({ role: e.role, content: e.content, source: "live", partial: !!e.partial }))];
-    session.events.push(...fresh.map(e => e.id));
+    data.messages = [...data.messages, ...fresh.map((e: LiveTranscriptBatchInputEventsItem) => ({ role: e.role, content: e.content, source: "live", partial: !!e.partial }))];
+    session.events.push(...fresh.map((e: LiveTranscriptBatchInputEventsItem) => e.id));
     await tx.update(careerRecords).set({ data }).where(eq(careerRecords.id, target.id));
     await tx.update(careerRecords).set({ data: session }).where(eq(careerRecords.id, row.id));
     return 200;

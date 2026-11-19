@@ -10,6 +10,8 @@ Limited access to support is not a lack of ability.
 Instead of requiring an existing CV, Optimum starts with the employer's
 requirements and a conversation about the applicant's real experience.
 
+[Try Optimum](https://rural-career-coach.replit.app/)
+
 ## What it does
 
 - Explains a job advert's requirements and the evidence an applicant needs.

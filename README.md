@@ -18,7 +18,8 @@ requirements and a conversation about the applicant's real experience.
 - Advises against irrelevant examples and identifies skills still to build.
 - Creates saved, job-specific CVs from confirmed information, with PDF export.
 - Supports scheduled, role-specific interview practice and feedback.
-- Offers live voice conversations and optional camera sharing using Gemini Live.
+- Offers live voice conversations and optional camera sharing through the
+  configured live interview provider.
 - Lets applicants try a guest workspace and save progress to an account.
 - Includes a six-slide, two-minute pitch accessible from the landing page.
 
@@ -69,10 +70,9 @@ and use the existing managed workflows.
 - Node.js 24 and pnpm 10.
 - A new development PostgreSQL database.
 - Clerk authentication configured for the application's origin.
-- An OpenAI-compatible API configuration supporting the models and tools used
-  in `artifacts/api-server/src/lib/ai.ts`.
-- A Gemini API key with **direct Gemini Live access and available quota**.
-  An ordinary text-generation proxy is not a substitute for Gemini Live.
+- A compatible model-provider connection for career guidance and CV creation.
+- A Google Gemini Live connection with **direct live access and available
+  quota**. An ordinary text-generation proxy is not a substitute for Live.
 
 ### Configuration
 

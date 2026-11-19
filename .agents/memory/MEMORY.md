@@ -1,3 +1,4 @@
 - [Product audience](product-audience.md) — Rural first-time applicants need accessible job-fit guidance; preserve supportive language and truthful CV coaching.
 - [Live provider compatibility](live-provider-compatibility.md) — Live docs and SDK ephemeral-auth versions can disagree; verify the actual constrained-token WebSocket connection.
 - [Gemini Live provider](gemini-live-provider.md) — direct Live access is required; verify current docs and handshake rather than trusting stale SDK version warnings.
+- [Programme context](programme-context.md) — The user reports selection for Google.org AI for Good and organiser instructions to share MIT-licensed code on GitHub.
